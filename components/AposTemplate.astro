@@ -1,0 +1,12 @@
+---
+import { templates } from 'virtual:apostrophe-doctypes';
+
+const { aposData } = Astro.props;
+
+const Template = templates[aposData.template]
+  || templates[aposData.template.replace(':page', '')]
+  || templates[aposData.module]
+  || templates['apos-no-template'];
+
+---
+{ Template && <Template {aposData} /> }

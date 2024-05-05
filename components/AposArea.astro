@@ -1,0 +1,52 @@
+---
+import AposWidget from './AposWidget.astro';
+
+const { area, ...props } = Astro.props;
+
+let attributes = {};
+const widgets = area?.items || [];
+
+const isEdit = area?._edit && Astro.url.searchParams.get('aposEdit');
+if (isEdit) {
+  attributes = {
+    'data-apos-area-newly-editable': '',
+    'data-doc-id': area?._docId,
+    'data-area-id': area?._id,
+    'data-field-id': area?.field?._id,
+    'data-options': JSON.stringify(area?.options),
+    'data-choices': JSON.stringify(area?.choices),
+    'data': JSON.stringify(area)
+  };
+}
+const Wrapper = isEdit ? 'div' : Fragment;
+const widgetOptions = getWidgetOptions(area.options);
+
+function getWidgetOptions(options) {
+  let widgets = options.widgets || {};
+
+  if (options.groups) {
+    for (const group of Object.keys(options.groups)) {
+      widgets = {
+        ...widgets,
+        ...options.groups[group].widgets
+      };
+    }
+  }
+  return widgets;
+}
+
+function mergeWidgets(groups:Record<string,Record<string,Object>>) {
+  const widgetOptions = {};
+  for (const group of Object.values(groups)) {
+    Object.assign(widgets, group.widgets || {});
+  }
+  return widgetOptions;
+}
+---
+<Wrapper {...attributes}>
+{widgets?.map((item) => {
+  return (
+    <AposWidget widget={item} options={widgetOptions[item.type]} {...props}/>
+  )
+  })}
+</Wrapper>

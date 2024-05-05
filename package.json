@@ -1,0 +1,14 @@
+{
+  "name": "sveltekit-integration",
+  "version": "1.0.0",
+  "description": "An extension to integrate Sveltekit as a frontend with ApostropheCMS as backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "undici": "^6.15.0"
+  }
+}
